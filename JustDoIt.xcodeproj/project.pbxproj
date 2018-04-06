@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B8AC5D61207752100024FF88 /* JustDoIt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AC5D5F207752100024FF88 /* JustDoIt.xcdatamodeld */; };
 		B8C4D62E206E1FE300B05D1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D62D206E1FE300B05D1D /* AppDelegate.swift */; };
 		B8C4D630206E1FE300B05D1D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D62F206E1FE300B05D1D /* ListViewController.swift */; };
 		B8C4D633206E1FE400B05D1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C4D631206E1FE400B05D1D /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B8AC5D60207752100024FF88 /* JustDoIt.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JustDoIt.xcdatamodel; sourceTree = "<group>"; };
 		B8C4D62A206E1FE300B05D1D /* JustDoIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustDoIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C4D62D206E1FE300B05D1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8C4D62F206E1FE300B05D1D /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			children = (
 				B8C4D62D206E1FE300B05D1D /* AppDelegate.swift */,
 				B8C4D62F206E1FE300B05D1D /* ListViewController.swift */,
+				B8AC5D5F207752100024FF88 /* JustDoIt.xcdatamodeld */,
 				B8C4D631206E1FE400B05D1D /* Main.storyboard */,
 				B8C4D634206E1FE400B05D1D /* Assets.xcassets */,
 				B8C4D636206E1FE400B05D1D /* LaunchScreen.storyboard */,
@@ -271,6 +274,7 @@
 				B8C4D65E206E31FA00B05D1D /* Item.swift in Sources */,
 				B8C4D660206E7B9300B05D1D /* DataManager.swift in Sources */,
 				B8C4D630206E1FE300B05D1D /* ListViewController.swift in Sources */,
+				B8AC5D61207752100024FF88 /* JustDoIt.xcdatamodeld in Sources */,
 				B8C4D62E206E1FE300B05D1D /* AppDelegate.swift in Sources */,
 				B8C4D65C206E241B00B05D1D /* ListTableViewCell.swift in Sources */,
 			);
@@ -564,6 +568,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B8AC5D5F207752100024FF88 /* JustDoIt.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B8AC5D60207752100024FF88 /* JustDoIt.xcdatamodel */,
+			);
+			currentVersion = B8AC5D60207752100024FF88 /* JustDoIt.xcdatamodel */;
+			path = JustDoIt.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B8C4D622206E1FE300B05D1D /* Project object */;
 }

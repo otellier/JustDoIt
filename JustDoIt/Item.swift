@@ -8,17 +8,18 @@
 
 import Foundation
 
-class Item : Codable {
-    var text: String
-    var checked:Bool
-    
-    
-    init(text: String, checked:Bool? = false) {
-        self.text=text
-        self.checked=checked!
-    }
-    
-    func  toggleChecked(){
-        checked = !checked
-    }
-}
+//class Item : Codable {
+//    var text: String
+//    var checked:Bool
+//    
+//    
+//    init(text: String, checked:Bool? = false) {
+//        self.text=text
+//        self.checked=checked!
+//    }
+//    
+//    func  toggleChecked(){
+//        checked = !checked
+//    }
+//}
+

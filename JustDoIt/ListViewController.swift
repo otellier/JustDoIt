@@ -18,6 +18,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //createItem()
+        navigationItem.title = "Just DO IT"
         try? DataManager.sharedInstance.loadListItems()
         items2 = DataManager.sharedInstance.cachedItems
         searchBar.placeholder = "Search Item"
@@ -37,8 +38,10 @@ class ListViewController: UIViewController {
         }
         
         let okAction = UIAlertAction(title: "Ok", style: .default){ (action) in
-            let item = Item(text: alertController.textFields![0].text!)
-            
+           // let item = Item(text: alertController.textFields![0].text!)
+            let item = Item(context: DataManager.sharedInstance.persistentContainer.viewContext)
+            item.text = alertController.textFields![0].text!
+            item.checked = false
             DataManager.sharedInstance.cachedItems.append(item)
             DataManager.sharedInstance.saveListItems()
             self.resetSearchBar()
@@ -89,7 +92,7 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
         
         let cell = tableView.cellForRow(at: indexPath)
         cell?.accessoryType = (items2[indexPath.row].checked) ? .none : .checkmark
-        items2[indexPath.row].toggleChecked()
+        items2[indexPath.row].checked = !items2[indexPath.row].checked
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
