@@ -102,14 +102,12 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-            let itemIndex = DataManager.sharedInstance.cachedItems.index(where:{ $0 === items2[indexPath.item]})!
-            items2.remove(at: indexPath.item)
-            DataManager.sharedInstance.cachedItems.remove(at: itemIndex)
+        let itemIndex = DataManager.sharedInstance.cachedItems.index(where:{ $0 === items2[indexPath.item]})!
         
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            DataManager.sharedInstance.saveListItems()
-        
-        
+        DataManager.sharedInstance.delete(item: DataManager.sharedInstance.cachedItems[itemIndex])
+        items2.remove(at: itemIndex)
+        DataManager.sharedInstance.cachedItems.remove(at: itemIndex)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     //MARK: UISearchResultsUpdating
