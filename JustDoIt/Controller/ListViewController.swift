@@ -14,15 +14,17 @@ class ListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var items2 = Array<Item>()
-    var list : Category!
+    var itemsFiltered = [Item]()
+    
+    var category : Category!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //createItem()
-        navigationItem.title = list.title
-        try? DataManager.sharedInstance.loadListItems()
-        items2 = DataManager.sharedInstance.cachedItems
+        navigationItem.title = category.title
+        try? DataManager.sharedInstance.loadData()
+        
+        itemsFiltered = category.items?.allObjects as! [Item]
         searchBar.placeholder = "Search Item"
         
     }
@@ -41,11 +43,12 @@ class ListViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "Ok", style: .default){ (action) in
            // let item = Item(text: alertController.textFields![0].text!)
-            let item = Item(context: DataManager.sharedInstance.persistentContainer.viewContext)
+            let item = Item(context: DataManager.sharedInstance.context)
             item.text = alertController.textFields![0].text!
             item.checked = false
-            DataManager.sharedInstance.cachedItems.append(item)
-            DataManager.sharedInstance.saveListItems()
+            self.category.addToItems(item)
+            DataManager.sharedInstance.saveCategory(category: self.category)
+            DataManager.sharedInstance.saveData()
             self.resetSearchBar()
             self.tableView.reloadData()
         }
@@ -62,29 +65,30 @@ class ListViewController: UIViewController {
     
     func resetSearchBar(){
         searchBar.text = ""
-        items2 = DataManager.sharedInstance.cachedItems
+        itemsFiltered = category.items?.allObjects as! [Item]
     }
 }
 
 extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     //MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items2.count
+        return itemsFiltered.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListViewCell", for: indexPath)
-        let item = items2[indexPath.row]
+        let item = itemsFiltered[indexPath.row]
         cell.textLabel?.text = item.text
         cell.accessoryType = (item.checked) ? .checkmark : .none
         return cell
     }
     
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let sourceItem = DataManager.sharedInstance.cachedItems.remove(at: sourceIndexPath.row)
-        
-        DataManager.sharedInstance.cachedItems.insert(sourceItem, at: destinationIndexPath.row)
-        DataManager.sharedInstance.saveListItems()
-    }
+//    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        let sourceItem = DataManager.sharedInstance.cachedItems.remove(at: sourceIndexPath.row)
+//
+//        DataManager.sharedInstance.cachedItems.insert(sourceItem, at: destinationIndexPath.row)
+//        DataManager.sharedInstance.saveData()
+//    }
+    
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return searchBarIsEmpty()
     }
@@ -93,22 +97,24 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
         tableView.deselectRow(at: indexPath, animated: true)
         
         let cell = tableView.cellForRow(at: indexPath)
-        cell?.accessoryType = (items2[indexPath.row].checked) ? .none : .checkmark
-        items2[indexPath.row].checked = !items2[indexPath.row].checked
+        cell?.accessoryType = (itemsFiltered[indexPath.row].checked) ? .none : .checkmark
+        itemsFiltered[indexPath.row].checked = !itemsFiltered[indexPath.row].checked
         
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return DataManager.sharedInstance.cachedItems.count > 1
-    }
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return DataManager.sharedInstance.cachedItems.count > 1
+//    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        let itemIndex = DataManager.sharedInstance.cachedItems.index(where:{ $0 === items2[indexPath.item]})!
         
-        DataManager.sharedInstance.delete(item: DataManager.sharedInstance.cachedItems[itemIndex])
-        items2.remove(at: itemIndex)
-        DataManager.sharedInstance.cachedItems.remove(at: itemIndex)
+        let itemIndex = (category.items?.allObjects as! [Item]).index(where:{ $0 === self.itemsFiltered[indexPath.item]})!
+
+        category.removeFromItems(category.items?.allObjects[itemIndex] as! Item)
+      //  DataManager.sharedInstance.delete(item: DataManager.sharedInstance.cachedItems[itemIndex])
+        self.itemsFiltered.remove(at: itemIndex)
+//        (category.items as! [Item]).remove(at: itemIndex)
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
@@ -120,9 +126,9 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBarIsEmpty() {
-            items2 = DataManager.sharedInstance.cachedItems
+            self.itemsFiltered = (category.items?.allObjects as! [Item])
         }else{
-            items2 = DataManager.sharedInstance.filter(searchText: searchText)
+            self.itemsFiltered = DataManager.sharedInstance.filter(searchText: searchText, category: category)
         }
         tableView.reloadData()
     }

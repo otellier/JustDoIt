@@ -14,10 +14,10 @@ class CategoryTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        categories.append(Category(title: "Category 1"))
-        categories.append(Category(title: "Category 2"))
-        categories.append(Category(title: "Category 3"))
-
+//        categories.append(Category(title: "Category 1"))
+//        categories.append(Category(title: "Category 2"))
+//        categories.append(Category(title: "Category 3"))
+        categories = DataManager.sharedInstance.cashedCategories
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,13 +32,13 @@ class CategoryTableViewController: UITableViewController {
     }
     
     func writeSubtitle(index: Int) -> String {
-        switch (categories[index].items.count, categories[index].uncheckedItemsCount) {
+        switch (categories[index].items!.count, categories[index].uncheckedItemsCount) {
         case (0,_):
-            return "(No Item)"+", Last Update : " + categories[index].dateModif.description
+            return "(No Item)"+", Last Update : " + categories[index].dateModif!.description
         case (_, 0):
-            return "All Done!" + ", Last Update : " + categories[index].dateModif.description
+            return "All Done!" + ", Last Update : " + categories[index].dateModif!.description
         default:
-            return String(categories[index].uncheckedItemsCount) + ", Last Update : " + categories[index].dateModif.description
+            return String(categories[index].uncheckedItemsCount) + ", Last Update : " + categories[index].dateModif!.description
         }
     }
     
@@ -52,9 +52,12 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        categories.remove(at: indexPath.item)
+        DataManager.sharedInstance.delete(category: categories[indexPath.row])
+        DataManager.sharedInstance.cashedCategories.remove(at: indexPath.row)
+        DataManager.sharedInstance.saveData()
+        categories = DataManager.sharedInstance.cashedCategories
         tableView.deleteRows(at: [indexPath], with: .automatic)
-      //  DataManager.sharedInstance.cachedItems = categories
+        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,7 +65,7 @@ class CategoryTableViewController: UITableViewController {
         {
             let destination = segue.destination as! ListViewController
             let index = tableView.indexPath(for: sender as! UITableViewCell)!
-            destination.list = categories[index.row]
+            destination.category = categories[index.row]
         }
         
         if segue.identifier == "addCategory"
@@ -95,7 +98,7 @@ extension CategoryTableViewController: DetailCategoryViewControllerDelegate {
     }
     func detailCategoryViewController(_ controller: DetailCategoryViewController, didFinishAddingItem category: Category){
         categories.append(category)
-        //TODO: Sauvegarde CoreData        save()
+        DataManager.sharedInstance.saveData()
         tableView.reloadData()
         //        let indexPath : IndexPath = IndexPath(row: checkLists.count-1, section: 0)
         //        tableView.insertRows(at: [indexPath], with: .automatic)
@@ -105,7 +108,7 @@ extension CategoryTableViewController: DetailCategoryViewControllerDelegate {
     
     func detailCategoryViewController(_ controller: DetailCategoryViewController, didFinishEditingItem category: Category){
         let listIndex = categories.index(where:{ $0 === category })!
-        //TODO: Sauvegarde CoreData      save()
+        DataManager.sharedInstance.saveData()
         tableView.reloadData()
         //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
         controller.dismiss(animated: true)

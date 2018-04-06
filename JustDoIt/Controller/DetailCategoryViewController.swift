@@ -22,8 +22,8 @@ class DetailCategoryViewController: UITableViewController, UITextFieldDelegate {
         var textUpdateDate : String = "Update Date : "
         if let categoryToEdit = categoryToEdit{
             titleTextField.text = categoryToEdit.title
-            textCreationDate += categoryToEdit.dateCreation.description
-            textUpdateDate += categoryToEdit.dateModif.description
+            textCreationDate += (categoryToEdit.dateCreation?.description)!
+            textUpdateDate += (categoryToEdit.dateModif?.description)!
 //            imageView.image = listToEdit.icon.image
             navigationItem.title = "Edit List"
         }else{
@@ -42,7 +42,11 @@ class DetailCategoryViewController: UITableViewController, UITextFieldDelegate {
             categoryToEdit.title = titleTextField.text!
             delegate?.detailCategoryViewController(self, didFinishEditingItem: categoryToEdit)
         }else{
-            delegate?.detailCategoryViewController(self, didFinishAddingItem: Category(title: titleTextField.text!))
+            var category = Category(context: DataManager.sharedInstance.context)
+            category.title = titleTextField.text!
+            category.dateCreation = Date()
+            category.dateModif = Date()
+            delegate?.detailCategoryViewController(self, didFinishAddingItem: category)
         }
     }
     

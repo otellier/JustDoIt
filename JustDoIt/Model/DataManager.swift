@@ -25,20 +25,29 @@ class DataManager{
         return persistentContainer.viewContext
     }
     
-    var cachedItems = [Item]()
+    var cashedCategories = [Category]()
     
     private init() {
-        loadListItems()
+        loadData()
     }
     
-    func filter(searchText: String) -> Array<Item>{
+    func filter(searchText: String, category: Category) -> Array<Item>{
         
         var items: [Item]! = nil
         let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        var predicates = [NSPredicate]()
         
         if searchText.count > 0{
-            let predicate = NSPredicate(format: "text contains[cd] %@", searchText)
-            fetchRequest.predicate = predicate
+            let predicateText = NSPredicate(format: "text contains[cd] %@", searchText)
+            
+            if category.title != "All"{
+                let predicateCategory = NSPredicate(format: "%K == %@",#keyPath(Item.category.title) , category.title!)
+                  predicates.append(predicateCategory)
+            }
+            
+            predicates.append(predicateText)
+            
+            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         }
         do{
             items = try context.fetch(fetchRequest)
@@ -51,39 +60,30 @@ class DataManager{
 //        })
     }
     
-    func delete(item: Item){
-        context.delete(item)
-        saveListItems();
+    func delete(category: Category){
+        context.delete(category)
+        saveData();
     }
     
-    func saveListItems(){
-//        let encoder = JSONEncoder()
-//        encoder.outputFormatting = .prettyPrinted
-//        let data = try! encoder.encode(cachedItems)
-//        print(String(data: data, encoding: .utf8)!)
-//        try! data.write(to: dataFileUrl)
-     //   saveContext()
+    func saveData(){
+        saveContext()
     }
     
-    func loadListItems(){
-//        if FileManager.default.fileExists(atPath: dataFileUrl.path) {
-//            let data = try? Data(contentsOf: dataFileUrl)
-//            let decoder = JSONDecoder()
-//            let itemsLoaded = try? decoder.decode(Array<Item>.self, from: data!)
-//            cachedItems = itemsLoaded!
-            
-        //}
+    func loadData(){
         
-        let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
         
         do {
-            self.cachedItems = try context.fetch(fetchRequest)
+            self.cashedCategories = try context.fetch(fetchRequest)
         }catch{
             debugPrint("Could not load the items from CoreData")
         }
     }
     
-    
+    func saveCategory(category: Category){
+        let index = self.cashedCategories.index(where: {$0 === category})
+        self.cashedCategories[index!] = category
+    }
     
     // MARK: - Core Data stack
     
