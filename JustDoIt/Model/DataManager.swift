@@ -21,6 +21,10 @@ class DataManager{
         return documentDirectory.appendingPathComponent("lists").appendingPathExtension("json")
     }
     
+    var context: NSManagedObjectContext{
+        return persistentContainer.viewContext
+    }
+    
     var cachedItems = [Item]()
     
     private init() {
@@ -28,9 +32,28 @@ class DataManager{
     }
     
     func filter(searchText: String) -> Array<Item>{
-        return DataManager.sharedInstance.cachedItems.filter({( item : Item) -> Bool in
-            return item.text!.lowercased().contains(searchText.lowercased())
-        })
+        
+        var items: [Item]! = nil
+        let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        if searchText.count > 0{
+            let predicate = NSPredicate(format: "text contains[cd] %@", searchText)
+            fetchRequest.predicate = predicate
+        }
+        do{
+            items = try context.fetch(fetchRequest)
+        }catch{
+            debugPrint("Could not load the items from CoreData")
+        }
+        return items
+//        return DataManager.sharedInstance.cachedItems.filter({( item : Item) -> Bool in
+//            return item.text!.lowercased().contains(searchText.lowercased())
+//        })
+    }
+    
+    func delete(item: Item){
+        context.delete(item)
+        saveListItems();
     }
     
     func saveListItems(){
@@ -51,6 +74,13 @@ class DataManager{
             
         //}
         
+        let fetchRequest: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        do {
+            self.cachedItems = try context.fetch(fetchRequest)
+        }catch{
+            debugPrint("Could not load the items from CoreData")
+        }
     }
     
     
