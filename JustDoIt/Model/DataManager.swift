@@ -39,7 +39,7 @@ class DataManager{
 //        let data = try! encoder.encode(cachedItems)
 //        print(String(data: data, encoding: .utf8)!)
 //        try! data.write(to: dataFileUrl)
-        saveContext()
+     //   saveContext()
     }
     
     func loadListItems(){

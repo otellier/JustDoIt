@@ -15,10 +15,12 @@ class ListViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     var items2 = Array<Item>()
+    var list : Category!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //createItem()
-        navigationItem.title = "Just DO IT"
+        navigationItem.title = list.title
         try? DataManager.sharedInstance.loadListItems()
         items2 = DataManager.sharedInstance.cachedItems
         searchBar.placeholder = "Search Item"
