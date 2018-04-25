@@ -19,7 +19,6 @@
 		B8C4D638206E1FE400B05D1D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8C4D636206E1FE400B05D1D /* LaunchScreen.storyboard */; };
 		B8C4D643206E1FE400B05D1D /* JustDoItTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D642206E1FE400B05D1D /* JustDoItTests.swift */; };
 		B8C4D64E206E1FE400B05D1D /* JustDoItUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D64D206E1FE400B05D1D /* JustDoItUITests.swift */; };
-		B8C4D65C206E241B00B05D1D /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D65B206E241B00B05D1D /* ListTableViewCell.swift */; };
 		B8C4D65E206E31FA00B05D1D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D65D206E31FA00B05D1D /* Item.swift */; };
 		B8C4D660206E7B9300B05D1D /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8C4D65F206E7B9300B05D1D /* DataManager.swift */; };
 		B8CFF605207776390001524A /* DetailCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFF604207776390001524A /* DetailCategoryViewController.swift */; };
@@ -61,7 +60,6 @@
 		B8C4D649206E1FE400B05D1D /* JustDoItUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustDoItUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8C4D64D206E1FE400B05D1D /* JustDoItUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustDoItUITests.swift; sourceTree = "<group>"; };
 		B8C4D64F206E1FE400B05D1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B8C4D65B206E241B00B05D1D /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		B8C4D65D206E31FA00B05D1D /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		B8C4D65F206E7B9300B05D1D /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		B8CFF604207776390001524A /* DetailCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCategoryViewController.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 			isa = PBXGroup;
 			children = (
 				B8C4D65F206E7B9300B05D1D /* DataManager.swift */,
-				B8C4D65B206E241B00B05D1D /* ListTableViewCell.swift */,
 				B8C4D65D206E31FA00B05D1D /* Item.swift */,
 				B801B7B020776B940085958F /* Category.swift */,
 				08199141209064C90003B10E /* ItemCell.swift */,
@@ -311,7 +308,6 @@
 				B8C4D62E206E1FE300B05D1D /* AppDelegate.swift in Sources */,
 				08975F1C209078E3001260F4 /* DetailItemViewController.swift in Sources */,
 				B8CFF605207776390001524A /* DetailCategoryViewController.swift in Sources */,
-				B8C4D65C206E241B00B05D1D /* ListTableViewCell.swift in Sources */,
 				B801B7B120776B940085958F /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
