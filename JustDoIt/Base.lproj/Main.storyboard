@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -71,12 +72,19 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="WmF-0P-dQh">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="ogC-iA-f9F">
-                            <connections>
-                                <action selector="addAction:" destination="BYZ-38-t0r" id="XQx-b2-n0Z"/>
-                                <segue destination="BAx-TP-Nt3" kind="presentation" identifier="addItem" id="Fm7-qa-dyh"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="ogC-iA-f9F">
+                                <connections>
+                                    <action selector="addAction:" destination="BYZ-38-t0r" id="XQx-b2-n0Z"/>
+                                    <segue destination="BAx-TP-Nt3" kind="presentation" identifier="addItem" id="Fm7-qa-dyh"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="organize" id="fdX-OI-TUC">
+                                <connections>
+                                    <action selector="sortByDate:" destination="BYZ-38-t0r" id="lYS-gv-wFq"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="tco-yt-q1n" id="3y5-7R-gDN"/>
@@ -119,7 +127,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x4Z-g2-Jx4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1994" y="118"/>
+            <point key="canvasLocation" x="-2714" y="107"/>
         </scene>
         <!--Categories-->
         <scene sceneID="QB0-Hv-xw6">
@@ -174,7 +182,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PGL-D8-9VZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1263" y="131"/>
+            <point key="canvasLocation" x="-1871" y="84"/>
         </scene>
         <!--listDetailNavigation-->
         <scene sceneID="h4o-hl-Dz6">
@@ -433,7 +441,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Phb-eB-CVz"/>
+        <segue reference="fOK-Tx-q3d"/>
         <segue reference="2XE-Am-nQl"/>
     </inferredMetricsTieBreakers>
 </document>

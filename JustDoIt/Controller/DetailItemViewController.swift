@@ -24,11 +24,17 @@ class DetailItemViewController: UITableViewController, UITextFieldDelegate {
          navigationItem.rightBarButtonItem?.isEnabled = false
         if let itemToEdit = itemToEdit{
             textField.text = itemToEdit.text
-            textCreationDate += (itemToEdit.dateCreation?.description)!
-            textUpdateDate += (itemToEdit.dateModif?.description)!
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+            
+            textCreationDate += dateFormatter.string(from: itemToEdit.dateCreation!)
+            textUpdateDate += dateFormatter.string(from: itemToEdit.dateModif!)
             //            imageView.image = listToEdit.icon.image
             navigationItem.title = "Edit List"
-            imageView.image = UIImage(data:(itemToEdit.image?.data)!) 
+            if(itemToEdit.image != nil){
+                imageView.image = UIImage(data:(itemToEdit.image?.data)!)
+            }
+            
         }else{
             textCreationDate += Date().description
             textUpdateDate += Date().description
@@ -62,16 +68,21 @@ class DetailItemViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func isDone(_ sender: Any) {
         if let itemToEdit = itemToEdit {
             itemToEdit.text = textField.text!
-            var imagetest = Image(context: DataManager.sharedInstance.context)
-            imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
-            itemToEdit.image = imagetest
+             if(imageView.image != nil){
+                var imagetest = Image(context: DataManager.sharedInstance.context)
+                imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
+                itemToEdit.image = imagetest
+            }
             delegate?.detailItemViewController(self, didFinishEditingItem: itemToEdit)
         }else{
             var item = Item(context: DataManager.sharedInstance.context)
             item.text = textField.text!
-            var imagetest = Image(context: DataManager.sharedInstance.context)
-            imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
-            item.image = imagetest
+            if(imageView.image != nil){
+                var imagetest = Image(context: DataManager.sharedInstance.context)
+                imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
+                item.image = imagetest
+            }
+            
             item.dateCreation = Date()
             item.dateModif = Date()
             delegate?.detailItemViewController(self, didFinishAddingItem: item)

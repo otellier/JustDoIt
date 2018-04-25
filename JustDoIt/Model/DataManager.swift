@@ -25,7 +25,7 @@ class DataManager{
         return persistentContainer.viewContext
     }
     
-    var cashedCategories = [Category]()
+    var cachedCategories = [Category]()
     
     private init() {
         loadData()
@@ -74,19 +74,19 @@ class DataManager{
         let fetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
         
         do {
-            self.cashedCategories = try context.fetch(fetchRequest)
+            self.cachedCategories = try context.fetch(fetchRequest)
         }catch{
             debugPrint("Could not load the items from CoreData")
         }
     }
     
-    func saveCategory(category: Category, item: Item? = nil){
-        let index = self.cashedCategories.index(where: {$0 === category})
+    func save(category: Category, item: Item? = nil){
+        let index = self.cachedCategories.index(where: {$0 === category})
         category.dateModif = Date()
         if (item != nil) {
             item?.dateModif = Date()
         }
-        self.cashedCategories[index!] = category
+        self.cachedCategories[index!] = category
         saveData()
     }
     

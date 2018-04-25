@@ -17,7 +17,7 @@ class CategoryTableViewController: UITableViewController {
 //        categories.append(Category(title: "Category 1"))
 //        categories.append(Category(title: "Category 2"))
 //        categories.append(Category(title: "Category 3"))
-        categories = DataManager.sharedInstance.cashedCategories
+        categories = DataManager.sharedInstance.cachedCategories
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -32,13 +32,18 @@ class CategoryTableViewController: UITableViewController {
     }
     
     func writeSubtitle(index: Int) -> String {
+        //
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, h:mm a"
+        let date = dateFormatter.string(from: categories[index].dateModif!)
+        
         switch (categories[index].items!.count, categories[index].uncheckedItemsCount) {
         case (0,_):
-            return "(No Item)"+", Last Update : " + categories[index].dateModif!.description
+            return "(No Item)"+" - " + date
         case (_, 0):
-            return "All Done!" + ", Last Update : " + categories[index].dateModif!.description
+            return "All Done!" + " - " + date
         default:
-            return String(categories[index].uncheckedItemsCount) + ", Last Update : " + categories[index].dateModif!.description
+            return String(categories[index].uncheckedItemsCount) + " - " + date
         }
     }
     
@@ -53,9 +58,9 @@ class CategoryTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         DataManager.sharedInstance.delete(object: categories[indexPath.row])
-        DataManager.sharedInstance.cashedCategories.remove(at: indexPath.row)
+        DataManager.sharedInstance.cachedCategories.remove(at: indexPath.row)
         DataManager.sharedInstance.saveData()
-        categories = DataManager.sharedInstance.cashedCategories
+        categories = DataManager.sharedInstance.cachedCategories
         tableView.deleteRows(at: [indexPath], with: .automatic)
         
     }
@@ -108,7 +113,7 @@ extension CategoryTableViewController: DetailCategoryViewControllerDelegate {
     
     func detailCategoryViewController(_ controller: DetailCategoryViewController, didFinishEditingItem category: Category){
         let listIndex = categories.index(where:{ $0 === category })!
-        DataManager.sharedInstance.saveCategory(category: category)
+        DataManager.sharedInstance.save(category: category)
         tableView.reloadData()
         //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
         controller.dismiss(animated: true)

@@ -22,8 +22,11 @@ class DetailCategoryViewController: UITableViewController, UITextFieldDelegate {
         var textUpdateDate : String = "Updated at : "
         if let categoryToEdit = categoryToEdit{
             titleTextField.text = categoryToEdit.title
-            textCreationDate += (categoryToEdit.dateCreation?.description)!
-            textUpdateDate += (categoryToEdit.dateModif?.description)!
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d, h:mm a"
+            
+            textCreationDate += dateFormatter.string(from: categoryToEdit.dateCreation!)
+            textUpdateDate += dateFormatter.string(from:categoryToEdit.dateModif!)
 //            imageView.image = listToEdit.icon.image
             navigationItem.title = "Edit List"
         }else{

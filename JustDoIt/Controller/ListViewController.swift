@@ -27,6 +27,8 @@ class ListViewController: UIViewController {
         itemsFiltered = category.items?.allObjects as! [Item]
         searchBar.placeholder = "Search Item"
         
+        
+        
     }
 //    func createItem(){
 //        for item in items{
@@ -35,7 +37,9 @@ class ListViewController: UIViewController {
 //    }
 
 
-
+    @IBAction func sortByDate(_ sender: Any) {
+    }
+    
     @IBAction func editAction(_ sender: Any) {
 //        let editButton = sender as! UIBarButtonItem
 //        editButton.se
@@ -96,7 +100,7 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
         let tempItem = category.items?.allObjects[itemIndex] as! Item;
         DataManager.sharedInstance.delete(object: tempItem)
         
-        DataManager.sharedInstance.saveCategory(category: self.category)
+        DataManager.sharedInstance.save(category: self.category)
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
@@ -151,7 +155,7 @@ extension ListViewController: DetailItemViewControllerDelegate {
     }
     func detailItemViewController(_ controller: DetailItemViewController, didFinishAddingItem item: Item){
         category.addToItems(item)
-        DataManager.sharedInstance.saveCategory(category: category)
+        DataManager.sharedInstance.save(category: category)
         self.resetSearchBar()
         tableView.reloadData()
         //        let indexPath : IndexPath = IndexPath(row: checkLists.count-1, section: 0)
@@ -161,7 +165,7 @@ extension ListViewController: DetailItemViewControllerDelegate {
     }
     
     func detailItemViewController(_ controller: DetailItemViewController, didFinishEditingItem item: Item){
-        DataManager.sharedInstance.saveCategory(category: category, item: item)
+        DataManager.sharedInstance.save(category: category, item: item)
         tableView.reloadData()
         //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
         controller.dismiss(animated: true)
