@@ -161,7 +161,7 @@ extension ListViewController: DetailItemViewControllerDelegate {
     }
     
     func detailItemViewController(_ controller: DetailItemViewController, didFinishEditingItem item: Item){
-        DataManager.sharedInstance.saveData()
+        DataManager.sharedInstance.saveCategory(category: category, item: item)
         tableView.reloadData()
         //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
         controller.dismiss(animated: true)

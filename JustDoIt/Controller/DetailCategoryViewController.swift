@@ -18,8 +18,8 @@ class DetailCategoryViewController: UITableViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var textCreationDate : String = "Creation Date : "
-        var textUpdateDate : String = "Update Date : "
+        var textCreationDate : String = "Created at : "
+        var textUpdateDate : String = "Updated at : "
         if let categoryToEdit = categoryToEdit{
             titleTextField.text = categoryToEdit.title
             textCreationDate += (categoryToEdit.dateCreation?.description)!

@@ -80,9 +80,12 @@ class DataManager{
         }
     }
     
-    func saveCategory(category: Category){
+    func saveCategory(category: Category, item: Item? = nil){
         let index = self.cashedCategories.index(where: {$0 === category})
         category.dateModif = Date()
+        if (item != nil) {
+            item?.dateModif = Date()
+        }
         self.cashedCategories[index!] = category
         saveData()
     }

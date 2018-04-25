@@ -14,21 +14,31 @@ class DetailItemViewController: UITableViewController, UITextFieldDelegate {
     var delegate : DetailItemViewControllerDelegate?
     var itemToEdit: Item?
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var labelDateCreation: UILabel!
+    @IBOutlet weak var labelDateUpdate: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var textCreationDate : String = "Created at : "
+        var textUpdateDate : String = "Updated at : "
+         navigationItem.rightBarButtonItem?.isEnabled = false
         if let itemToEdit = itemToEdit{
             textField.text = itemToEdit.text
+            textCreationDate += (itemToEdit.dateCreation?.description)!
+            textUpdateDate += (itemToEdit.dateModif?.description)!
             //            imageView.image = listToEdit.icon.image
             navigationItem.title = "Edit List"
-            if(itemToEdit.image != nil){
-                imageView.image = UIImage(data:(itemToEdit.image?.data)!,scale:1.0)
-            }
-            
+            imageView.image = UIImage(data:(itemToEdit.image?.data)!) 
+        }else{
+            textCreationDate += Date().description
+            textUpdateDate += Date().description
         }
+        labelDateUpdate.text = textUpdateDate
+        labelDateCreation.text = textCreationDate
     }
     
     @IBAction func browseImage(_ sender: Any) {
+        
         let imagePicker = UIImagePickerController()
         imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for:.photoLibrary)!
         
@@ -52,17 +62,25 @@ class DetailItemViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func isDone(_ sender: Any) {
         if let itemToEdit = itemToEdit {
             itemToEdit.text = textField.text!
+            var imagetest = Image(context: DataManager.sharedInstance.context)
+            imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
+            itemToEdit.image = imagetest
             delegate?.detailItemViewController(self, didFinishEditingItem: itemToEdit)
         }else{
             var item = Item(context: DataManager.sharedInstance.context)
             item.text = textField.text!
+            var imagetest = Image(context: DataManager.sharedInstance.context)
+            imagetest.data = UIImagePNGRepresentation(imageView.image!) as Data?
+            item.image = imagetest
+            item.dateCreation = Date()
+            item.dateModif = Date()
             delegate?.detailItemViewController(self, didFinishAddingItem: item)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         textField.becomeFirstResponder()
-       //TODO navigationItem.rightBarButtonItem?.isEnabled = false
+       
         textField.delegate = self
     }
     
@@ -92,7 +110,7 @@ extension DetailItemViewController: UIImagePickerControllerDelegate, UINavigatio
         defer {
             picker.dismiss(animated: true)
         }
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        
         print(info)
         // get the image
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
@@ -101,7 +119,7 @@ extension DetailItemViewController: UIImagePickerControllerDelegate, UINavigatio
         
         // do something with it
         imageView.image = image
-        
+        navigationItem.rightBarButtonItem?.isEnabled = true
         
     }
     
