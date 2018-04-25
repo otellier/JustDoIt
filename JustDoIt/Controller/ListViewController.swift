@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  JustDoIt
+//  JustDoIt@
 //
 //  Created by iem on 30/03/2018.
 //  Copyright © 2018 iem. All rights reserved.
@@ -34,29 +34,8 @@ class ListViewController: UIViewController {
 //        }
 //    }
 
-    @IBAction func addAction(_ sender: Any) {
-        let alertController =  UIAlertController(title: "Doit", message: "New item", preferredStyle: .alert)
-        
-        alertController.addTextField{ (textField) in
-            textField.placeholder = "Name"
-        }
-        
-        let okAction = UIAlertAction(title: "Ok", style: .default){ (action) in
-           // let item = Item(text: alertController.textFields![0].text!)
-            let item = Item(context: DataManager.sharedInstance.context)
-            item.text = alertController.textFields![0].text!
-            item.checked = false
-            self.category.addToItems(item)
-            DataManager.sharedInstance.saveCategory(category: self.category)
-            DataManager.sharedInstance.saveData()
-            self.resetSearchBar()
-            self.tableView.reloadData()
-        }
-        alertController.addAction(okAction)
 
-        present(alertController, animated: true, completion: nil)
-    }
-    
+
     @IBAction func editAction(_ sender: Any) {
 //        let editButton = sender as! UIBarButtonItem
 //        editButton.se
@@ -75,10 +54,10 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
         return itemsFiltered.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListViewCell", for: indexPath) as! ItemCell
         let item = itemsFiltered[indexPath.row]
-        cell.textLabel?.text = item.text
-        cell.accessoryType = (item.checked) ? .checkmark : .none
+        cell.nameLabel.text = item.text
+        cell.checkLabel.isHidden = (item.checked) ? false : true
         return cell
     }
     
@@ -96,10 +75,11 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let cell = tableView.cellForRow(at: indexPath)
-        cell?.accessoryType = (itemsFiltered[indexPath.row].checked) ? .none : .checkmark
-        itemsFiltered[indexPath.row].checked = !itemsFiltered[indexPath.row].checked
-        
+        let cell = tableView.cellForRow(at: indexPath) as! ItemCell
+        let item = itemsFiltered[indexPath.row]
+        item.checked = !item.checked
+        cell.checkLabel.isHidden = !cell.checkLabel.isHidden
+
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
@@ -110,11 +90,13 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         let itemIndex = (category.items?.allObjects as! [Item]).index(where:{ $0 === self.itemsFiltered[indexPath.item]})!
-
-        category.removeFromItems(category.items?.allObjects[itemIndex] as! Item)
-      //  DataManager.sharedInstance.delete(item: DataManager.sharedInstance.cachedItems[itemIndex])
-        self.itemsFiltered.remove(at: itemIndex)
-//        (category.items as! [Item]).remove(at: itemIndex)
+        
+        self.itemsFiltered.remove(at: indexPath.item)
+        
+        let tempItem = category.items?.allObjects[itemIndex] as! Item;
+        DataManager.sharedInstance.delete(object: tempItem)
+        
+        DataManager.sharedInstance.saveCategory(category: self.category)
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
@@ -132,9 +114,58 @@ extension ListViewController : UITableViewDataSource, UITableViewDelegate, UISea
         }
         tableView.reloadData()
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    
+        if segue.identifier == "addItem"
+        {
+            let destination = segue.destination as! UINavigationController
+            let targetController = destination.topViewController as! DetailItemViewController
+            targetController.delegate = self
+            
+        }
+        
+        if segue.identifier == "editItem"
+        {
+            let destination = segue.destination as! UINavigationController
+            let targetController = destination.topViewController as! DetailItemViewController
+            //TODO: Envoyer l'item a la case cliqué
+            let index = tableView.indexPath(for: sender as! UITableViewCell)!
+            targetController.itemToEdit = itemsFiltered[index.item]
+            targetController.delegate = self
+            
+        }
+    }
+    
 //
 //    func updateSearchResults(for searchController: UISearchController) {
 //        filterContentForSearchText(searchController.searchBar.text!)
 //    }
+}
+
+extension ListViewController: DetailItemViewControllerDelegate {
+    
+    func detailItemViewControllerDidCancel(_ controller: DetailItemViewController){
+        controller.dismiss(animated: true)
+    }
+    func detailItemViewController(_ controller: DetailItemViewController, didFinishAddingItem item: Item){
+        category.addToItems(item)
+        DataManager.sharedInstance.saveCategory(category: category)
+        self.resetSearchBar()
+        tableView.reloadData()
+        //        let indexPath : IndexPath = IndexPath(row: checkLists.count-1, section: 0)
+        //        tableView.insertRows(at: [indexPath], with: .automatic)
+        controller.dismiss(animated: true)
+        
+    }
+    
+    func detailItemViewController(_ controller: DetailItemViewController, didFinishEditingItem item: Item){
+        DataManager.sharedInstance.saveData()
+        tableView.reloadData()
+        //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
+        controller.dismiss(animated: true)
+    }
+    
 }
 

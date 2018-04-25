@@ -41,7 +41,7 @@ class DataManager{
             let predicateText = NSPredicate(format: "text contains[cd] %@", searchText)
             
             if category.title != "All"{
-                let predicateCategory = NSPredicate(format: "%K == %@",#keyPath(Item.category.title) , category.title!)
+                let predicateCategory = NSPredicate(format: "%K == %@",#keyPath(Item.category) , category)
                   predicates.append(predicateCategory)
             }
             
@@ -60,8 +60,8 @@ class DataManager{
 //        })
     }
     
-    func delete(category: Category){
-        context.delete(category)
+    func delete(object: NSManagedObject){
+        context.delete(object)
         saveData();
     }
     
@@ -82,7 +82,9 @@ class DataManager{
     
     func saveCategory(category: Category){
         let index = self.cashedCategories.index(where: {$0 === category})
+        category.dateModif = Date()
         self.cashedCategories[index!] = category
+        saveData()
     }
     
     // MARK: - Core Data stack

@@ -52,7 +52,7 @@ class CategoryTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        DataManager.sharedInstance.delete(category: categories[indexPath.row])
+        DataManager.sharedInstance.delete(object: categories[indexPath.row])
         DataManager.sharedInstance.cashedCategories.remove(at: indexPath.row)
         DataManager.sharedInstance.saveData()
         categories = DataManager.sharedInstance.cashedCategories
@@ -108,7 +108,7 @@ extension CategoryTableViewController: DetailCategoryViewControllerDelegate {
     
     func detailCategoryViewController(_ controller: DetailCategoryViewController, didFinishEditingItem category: Category){
         let listIndex = categories.index(where:{ $0 === category })!
-        DataManager.sharedInstance.saveData()
+        DataManager.sharedInstance.saveCategory(category: category)
         tableView.reloadData()
         //        tableView.reloadRows(at: [IndexPath(row: listIndex, section: 0)], with: .automatic)
         controller.dismiss(animated: true)

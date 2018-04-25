@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08199142209064C90003B10E /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08199141209064C90003B10E /* ItemCell.swift */; };
+		08975F1C209078E3001260F4 /* DetailItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08975F1B209078E3001260F4 /* DetailItemViewController.swift */; };
 		B801B7B120776B940085958F /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B801B7B020776B940085958F /* Category.swift */; };
 		B801B7B320776C2B0085958F /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B801B7B220776C2B0085958F /* CategoryTableViewController.swift */; };
 		B8AC5D61207752100024FF88 /* JustDoIt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B8AC5D5F207752100024FF88 /* JustDoIt.xcdatamodeld */; };
@@ -41,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08199141209064C90003B10E /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		08975F1B209078E3001260F4 /* DetailItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItemViewController.swift; sourceTree = "<group>"; };
 		B801B7B020776B940085958F /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B801B7B220776C2B0085958F /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		B8AC5D60207752100024FF88 /* JustDoIt.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JustDoIt.xcdatamodel; sourceTree = "<group>"; };
@@ -94,6 +98,7 @@
 				B8C4D62F206E1FE300B05D1D /* ListViewController.swift */,
 				B801B7B220776C2B0085958F /* CategoryTableViewController.swift */,
 				B8CFF604207776390001524A /* DetailCategoryViewController.swift */,
+				08975F1B209078E3001260F4 /* DetailItemViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -105,6 +110,7 @@
 				B8C4D65B206E241B00B05D1D /* ListTableViewCell.swift */,
 				B8C4D65D206E31FA00B05D1D /* Item.swift */,
 				B801B7B020776B940085958F /* Category.swift */,
+				08199141209064C90003B10E /* ItemCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -300,8 +306,10 @@
 				B8C4D660206E7B9300B05D1D /* DataManager.swift in Sources */,
 				B8C4D630206E1FE300B05D1D /* ListViewController.swift in Sources */,
 				B801B7B320776C2B0085958F /* CategoryTableViewController.swift in Sources */,
+				08199142209064C90003B10E /* ItemCell.swift in Sources */,
 				B8AC5D61207752100024FF88 /* JustDoIt.xcdatamodeld in Sources */,
 				B8C4D62E206E1FE300B05D1D /* AppDelegate.swift in Sources */,
+				08975F1C209078E3001260F4 /* DetailItemViewController.swift in Sources */,
 				B8CFF605207776390001524A /* DetailCategoryViewController.swift in Sources */,
 				B8C4D65C206E241B00B05D1D /* ListTableViewCell.swift in Sources */,
 				B801B7B120776B940085958F /* Category.swift in Sources */,
